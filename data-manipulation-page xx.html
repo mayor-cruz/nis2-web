@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Manipulation & Adversarial Attacks in UK Healthcare - HealthSecureAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4d7cfe;
+      --dark: #2c5282;
+      --accent: #4d7cfe;
+      --accent2: #4CAF50;
+      --bg: #F7F9FC;
+      --text: #333;
+      --heading-font: 'Inter', sans-serif;
+      --body-font: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--body-font);
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 20px;
+      font-weight: 400;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 1rem;
+    }
+
+    /* Site Header */
+    .site-header {
+      background: var(--dark);
+      color: #fff;
+      padding: 2rem 0;
+    }
+
+    .site-header h1 {
+      font-family: var(--heading-font);
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .site-header p {
+      font-size: 1.2rem;
+      opacity: 0.85;
+      max-width: 800px;
+    }
+
+    /* Navigation */
+    .site-nav {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .site-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      color: #002147;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Hero */
+    .page-hero {
+      padding: 3rem 0;
+      background: linear-gradient(rgba(44, 82, 130, 0.9), rgba(44, 82, 130, 0.8)), url('https://via.placeholder.com/1200x400') no-repeat center center;
+      background-size: cover;
+      color: white;
+    }
+
+    .page-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #f8f9fa; 
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .page-hero p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-accent-line {
+      width: 120px;
+      height: 4px;
+      background-color: #4d7cfe;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Section styles */
+    section {
+      padding: 3rem 0;
+    }
+
+    section .container {
+      max-width: 1000px;
+    }
+
+    section h2 {
+      font-family: var(--heading-font);
+      font-size: 2rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    section h2:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    section h3 {
+      font-family: var(--heading-font);
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin: 1.5rem 0 1rem;
+    }
+
+    section h4 {
+      font-family: var(--heading-font);
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin: 1.5rem 0 0.5rem;
+    }
+
+    section p,
+    section ul,
+    section ol {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    section ol {
+      padding-left: 20px;
+    }
+
+    section ul li,
+    section ol li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Table of Contents */
+    .toc-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 2rem 0;
+    }
+
+    .toc-card h2 {
+      font-family: var(--heading-font);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .toc-card h2:after {
+      display: none;
+    }
+
+    .toc-card ul {
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 0.75rem;
+    }
+
+    .toc-card li {
+      display: flex;
+      align-items: center;
+    }
+
+    .toc-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: 0.9rem;
+      margin-right: 0.75rem;
+    }
+
+    /* Grid & Card elements */
+    .threat-grid {
+      display: grid;
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      height: 100%;
+    }
+
+    .card p {
+      font-weight: 400;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 0.75rem;
+      color: var(--dark);
+      font-size: 1.1rem;
+    }
+
+    .highlight {
+      background: #fff;
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent);
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .highlight strong {
+      color: var(--dark);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Compare sections */
+    .compare-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .compare-header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .compare-content {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image styling */
+    .img-container {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+
+    .img-container img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Call to action section */
+    .cta-section {
+      background: var(--dark);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-section h2:after {
+      margin: 0 auto;
+      left: 0;
+      right: 0;
+      background: #FFF;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: white;
+      border: 2px solid white;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      transition: all 0.3s ease;
+    }
+
+    /* Footer */
+    footer {
+      background: #002147;
+      color: white;
+      padding: 3rem 0 1rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h3 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Back to top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: #fff;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.25rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    .back-to-top:hover {
+      opacity: 1;
+      color: white;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .compare-container {
+        grid-template-columns: 1fr;
+      }
+
+      .site-header h1 {
+        font-size: 2rem;
+      }
+
+      .site-header p {
+        font-size: 1rem;
+      }
+
+      .page-hero h1 {
+        font-size: 2rem;
+      }
+
+      section h2 {
+        font-size: 1.8rem;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="site-nav">
+    <div class="container">
+      <div class="brand">HealthSecureAI</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#introduction">Introduction</a></li>
+        <li><a href="deepfake-attacks.html">Deepfake Attacks</a></li>
+        <li><a href="data-manipulation.html">Data Manipulation</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Data Manipulation & Adversarial Attacks</h1>
+      <div class="hero-accent-line"></div>
+      <p>Understanding how attackers can manipulate medical imaging data to compromise AI diagnostic systems in the UK healthcare sector, potentially leading to misdiagnosis and patient harm.</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section>
+    <div class="container">
+      <div class="toc-card">
+        <h2>Data Manipulation Topics</h2>
+        <ul>
+          <li><span class="toc-number">1</span> <a href="#understanding">Understanding the Risk</a></li>
+          <li><span class="toc-number">2</span> <a href="#examples">AI in UK Healthcare</a></li>
+          <li><span class="toc-number">3</span> <a href="#toolkit">Threat & Attacker Toolkit</a></li>
+          <li><span class="toc-number">4</span> <a href="#incidents">Cybersecurity Incidents</a></li>
+          <li><span class="toc-number">5</span> <a href="#vulnerabilities">Key Vulnerabilities</a></li>
+          <li><span class="toc-number">6</span> <a href="#solutions">Existing Solutions Analysis</a></li>
+          <li><span class="toc-number">7</span> <a href="#recommendations">Recommendations</a></li>
+        </ul>
+      </div>
+
+      <div id="understanding">
+        <h2>Understanding the Risk</h2>
+
+        <p>Medical imaging diagnostic AI models are becoming increasingly integrated into the UK healthcare ecosystem. These systems are trained on large datasets of medical images and can automatically detect conditions such as tumors, fractures, internal bleeding, and other health factors. However, this growing reliance on AI for critical diagnostic decisions creates a new attack vector: adversarial attacks that manipulate data to undermine diagnostic outcomes.</p>
+
+        <div class="highlight">
+          <strong>What are Adversarial Attacks?</strong>
+          <p>An adversarial attack refers to attackers intentionally altering input data in subtle ways, leading to incorrect predictions. For example, an attacker might take an image of a cancerous tumor and modify it in ways imperceptible to human observers, causing the AI to classify it as "No cancer detected." These attacks exploit vulnerabilities in machine learning models by introducing carefully crafted manipulations to input data, potentially causing diagnostic models to produce dangerously incorrect outputs without raising suspicion among clinicians.</p>
+        </div>
+
+        <div class="img-container">
+          <img src="https://via.placeholder.com/800x400" alt="Adversarial Attack Diagram" />
+        </div>
+
+        <p>As hospitals increasingly use AI to speed up diagnostics, prioritize urgent cases, and assist radiologists, the attack surface for adversarial manipulation grows. What makes these attacks particularly dangerous in healthcare is that a small, imperceptible change to diagnostic data could lead to life-threatening consequences for patients through delayed treatment or missed diagnoses.</p>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Patient Safety Risk</strong>
+            <p>Manipulated diagnostic images could lead to misdiagnosis, delayed treatment, or unnecessary procedures, directly impacting patient outcomes and safety.</p>
+          </div>
+
+          <div class="card">
+            <strong>Trust Erosion</strong>
+            <p>Successful adversarial attacks undermine trust in AI diagnostic systems, potentially slowing adoption of beneficial healthcare technologies.</p>
+          </div>
+
+          <div class="card">
+            <strong>Operational Disruption</strong>
+            <p>Healthcare providers may need to revert to manual processes if AI systems are compromised, creating bottlenecks and backlogs in diagnostic workflows.</p>
+          </div>
+
+          <div class="card">
+            <strong>Data Integrity Challenges</strong>
+            <p>Adversarial attacks can compromise the integrity of medical datasets used for both training and inference, with effects that persist beyond individual incidents.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="examples">
+        <h3>AI Systems in UK Healthcare</h3>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Google DeepMind</strong>
+            <p>Google's DeepMind has demonstrated diagnostic accuracy surpassing human levels in certain applications. Their AI systems can analyze medical images to detect conditions faster and more accurately than traditional methods in some cases.</p>
+          </div>
+
+          <div class="card">
+            <strong>Kheiron Medical Technologies</strong>
+            <p>Kheiron has deployed Mammograph Intelligent Assessment (MIA), an AI platform for breast screening that matches the diagnostic accuracy of human radiologists in double reading workflows, reducing workloads and enabling earlier cancer detection.</p>
+          </div>
+
+          <div class="card">
+            <strong>Behold.ai</strong>
+            <p>Behold.ai has developed an intelligent CT and X-ray medical diagnosis platform that can almost instantly detect various conditions. Their "red dot" algorithm has been approved by the UK's Medicines & Healthcare products Regulatory Agency (MHRA) for use in NHS hospitals.</p>
+          </div>
+
+          <div class="card">
+            <strong>NHS AI Integration</strong>
+            <p>The NHS is increasingly adopting AI-powered diagnostic tools across its trusts, with Picture Archiving and Communication Systems (PACS) serving as centralized repositories for medical imaging that AI systems access for analysis.</p>
+          </div>
+        </div>
+
+        <div class="highlight">
+          <strong>Vulnerability to Attack:</strong>
+          <p>These AI systems present specific vulnerabilities to adversarial attacks. Kheiron's MIA integration into national screening raises concerns about attackers subtly modifying mammograms to evade detection. Behold.ai's reliance on accurate Digital Imaging and Communications in Medicine (DICOM) image inputs introduces vulnerabilities where AI predictions could be misled, providing false negatives and potentially delaying treatment.</p>
+        </div>
+      </div>
+
+      <div id="toolkit">
+        <h3>Threat and Attacker Toolkit</h3>
+
+        <p>Various actors may target AI models in healthcare, with motivations ranging from financial gain to sabotage. They employ sophisticated tools and techniques to compromise these systems.</p>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Potential Attackers</strong>
+            <p>Threat actors include state-sponsored groups targeting critical infrastructure, cybercriminals seeking financial gain through fraud or ransom, and disgruntled employees with insider access and knowledge of system vulnerabilities.</p>
+          </div>
+
+          <div class="card">
+            <strong>Adversarial Generation Tools</strong>
+            <p>Tools like CleverHans and Foolbox are designed to craft inputs that deceive deep learning models without altering human-visible characteristics, making detection extremely difficult without specialized monitoring.</p>
+          </div>
+
+          <div class="card">
+            <strong>Data Poisoning Scripts</strong>
+            <p>Trojaning and Badnets frameworks allow attackers to manipulate a subset of training data, embedding backdoors into models that can be triggered later to cause misclassification of specific patterns.</p>
+          </div>
+
+          <div class="card">
+            <strong>Model Extraction Techniques</strong>
+            <p>Attackers can reverse engineer AI models through APIs or stolen model files, allowing them to replicate and manipulate models offline to discover vulnerabilities that can be exploited in production systems.</p>
+          </div>
+        </div>
+
+        <div class="compare-container">
+          <div>
+            <div class="compare-header">Advanced Attack Methods</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>Malware and Ransomware:</strong> Tools like Cobalt Strike and Metasploit can be repurposed to breach infrastructure housing AI systems</li>
+                <li><strong>Cloud Exploits:</strong> Targeting misconfigured cloud storage, API permissions, or weak access controls</li>
+                <li><strong>Synthetic Data Manipulation:</strong> Using tools like StyleGAN to generate false medical images for injection into training datasets</li>
+                <li><strong>Man-in-the-Middle Attacks:</strong> Intercepting and modifying medical images in transit between devices and storage systems</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="compare-header">Attack Impact</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>Targeted Misdiagnosis:</strong> Causing AI to miss specific conditions while maintaining accuracy on other cases</li>
+                <li><strong>System Disruption:</strong> Forcing healthcare providers to revert to manual processes</li>
+                <li><strong>Data Exfiltration:</strong> Stealing sensitive medical information for sale or ransom</li>
+                <li><strong>Long-term Model Corruption:</strong> Embedding persistent vulnerabilities that affect future diagnostic accuracy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="incidents">
+        <h3>Cybersecurity Incidents in UK Healthcare</h3>
+
+        <div class="highlight">
+          <strong>Synnovis Ransomware Attack (June 2024)</strong>
+          <p>The cybercriminal group Qilin deployed a ransomware attack against Synnovis, a pathology service provider for the NHS. The attack led to the postponement of over 1,500 operations and outpatient appointments in London hospitals, causing significant disruptions to treatments and surgeries. When Synnovis refused to pay the ransom, Qilin exfiltrated and published confidential patient information on the dark web, highlighting the vulnerability of centralized healthcare data infrastructure.</p>
+        </div>
+
+        <div class="highlight">
+          <strong>NHS 111 Advanced Software Ransomware Attack (2022)</strong>
+          <p>The Advanced Computer Software Group, which provides digital services to the NHS including the Adastra system supporting NHS 111, was hit by a sophisticated ransomware attack. Systems were forced offline for several weeks, disrupting administrative tasks and patient care operations. Forensic investigation revealed significant cybersecurity failures, including lack of multi-factor authentication for remote access and inadequate system monitoring, resulting in a £3.07 million fine from the Information Commissioner's Office in March 2025.</p>
+        </div>
+
+        <p>These incidents demonstrate how cyberattacks on healthcare infrastructure can have direct implications for AI systems. For example, AI models requiring real-time clinical data could unknowingly process missing or manipulated information following a ransomware attack, producing flawed predictions. If adversaries gained access to datasets used to train AI models, there would be potential for data poisoning and model corruption, degrading system performance over time.</p>
+
+        <div class="img-container">
+          <img src="https://via.placeholder.com/800x400" alt="Healthcare Cybersecurity Incident Impact" />
+        </div>
+      </div>
+
+      <div id="vulnerabilities">
+        <h3>Key Vulnerabilities</h3>
+        
+        <p>Several critical vulnerabilities enable adversarial attacks and data manipulation in healthcare AI systems:</p>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Absence of AI Risk Assessment</strong>
+            <p>Many organizations lack formal adversarial threat modeling specific to AI systems. The NHS Buyers Guide to AI mentions adversarial attack risks but lacks requirements for vendors to demonstrate resilience against data poisoning scenarios. (CISSP Domain 1: Security and Risk Management)</p>
+          </div>
+
+          <div class="card">
+            <strong>Vulnerable Data Storage</strong>
+            <p>Medical image stores and training repositories often use cloud buckets or legacy file shares that may be misconfigured, leaving them publicly accessible. CVE-2023-51637 and CVE-2024-33606 demonstrate vulnerabilities in PACS servers that could allow attackers to retrieve or plant medical images. (CISSP Domain 2: Asset Security)</p>
+          </div>
+
+          <div class="card">
+            <strong>Inadequate Image Validation</strong>
+            <p>Many systems lack pixel-level anomaly checks on incoming images. Studies have shown that "universal adversarial perturbations" computed from model gradients can force any chest X-ray to be labeled "Normal," causing underreporting of critical conditions. (CISSP Domains 3 & 4)</p>
+          </div>
+
+          <div class="card">
+            <strong>Federated Learning Weaknesses</strong>
+            <p>As healthcare organizations explore federated learning to train models collaboratively without sharing raw patient data, they introduce vulnerability to data poisoning. A single compromised participant can inject carefully crafted updates that subtly warp model behavior. (CISSP Domains 2 & 8)</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="solutions">
+        <h3>Critical Analysis of Existing Solutions</h3>
+
+        <h4>Defending against Federated Learning Poisoning Attacks</h4>
+
+        <div class="compare-container">
+          <div>
+            <div class="compare-header">Current Approaches</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>Secure Aggregation:</strong> Cryptographically masking individual client gradient contributions so the central server only sees aggregate updates</li>
+                <li><strong>Robust Filtering:</strong> Using discriminator networks trained to distinguish between benign and anomalous gradient updates</li>
+                <li><strong>Trusted Execution:</strong> Implementing GPU-based trusted execution environments for model training</li>
+                <li><strong>Blockchain Logging:</strong> Using permissioned blockchain to immutably log hashed gradient summaries for forensics and rollback</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="compare-header">Limitations</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>Performance Impact:</strong> GPU-based trusted execution environments slow inference by 54-904% and training by 10-455%</li>
+                <li><strong>False Positives:</strong> Robust filtering may wrongly discard legitimate updates, harming model quality</li>
+                <li><strong>Resource Intensity:</strong> Secure aggregation is computationally expensive during the protection phase</li>
+                <li><strong>Equity Issues:</strong> Some protective measures may exclude valuable data from smaller or non-standard providers</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h4>Defending Against DICOM Tampering in Transit</h4>
+        
+        <div class="compare-container">
+          <div>
+            <div class="compare-header">Current Approaches</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>DICOM-TLS Encryption:</strong> Enforcing encrypted transmission of medical imaging files</li>
+                <li><strong>Digital Signatures:</strong> Implementing digital signing of image files to detect tampering</li>
+                <li><strong>Network Segmentation:</strong> Isolating imaging networks from general hospital systems</li>
+                <li><strong>Signature Verification:</strong> Requiring scanners and PACS to verify file signatures before ingestion</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="compare-header">Limitations</div>
+            <div class="compare-content">
+              <ul>
+                <li><strong>Legacy Compatibility:</strong> Older scanners often can't support modern security upgrades without expensive replacements</li>
+                <li><strong>Detection Granularity:</strong> Static signature checks can catch gross tampering but not tiny pixel-level adversarial modifications</li>
+                <li><strong>Operational Conflicts:</strong> Security measures can create single points of failure in critical imaging workflows</li>
+                <li><strong>Evolving Threats:</strong> Current defenses may not adapt quickly enough to new attack techniques</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h4>Proposed Improvements</h4>
+        
+        <p>Better solutions to these challenges could include:</p>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Edge Security Proxies</strong>
+            <p>Adding hardware proxies adjacent to imaging equipment that enforce encryption, check file signatures, and run fast filters to detect adversarial patterns before they reach AI systems.</p>
+          </div>
+
+          <div class="card">
+            <strong>Adaptive Threshold Controls</strong>
+            <p>Implementing dynamic systems that adjust gradient clipping based on historical update patterns from each participating healthcare facility in federated learning networks.</p>
+          </div>
+
+          <div class="card">
+            <strong>AI-Based Filtering Systems</strong>
+            <p>Deploying specialized AI systems trained to detect adversarial modifications in medical images before they reach diagnostic AI models.</p>
+          </div>
+
+          <div class="card">
+            <strong>Continuous Threat Updates</strong>
+            <p>Establishing mechanisms to rapidly distribute information about new attack patterns and techniques to all connected healthcare AI systems.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="recommendations">
+        <h3>Recommended Solutions</h3>
+
+        <div class="threat-grid">
+          <div class="card">
+            <strong>Adversarial Training</strong>
+            <p>Incorporate adversarial examples during AI model training to increase robustness against manipulation attempts, exposing models to potential attack patterns before deployment in clinical settings.</p>
+          </div>
+
+          <div class="card">
+            <strong>Secure Data Handling</strong>
+            <p>Implement blockchain-based log systems and end-to-end encryption for all medical image data transfers, ensuring data provenance and integrity from capture through analysis and storage.</p>
+          </div>
+
+          <div class="card">
+            <strong>Input Validation Systems</strong>
+            <p>Deploy specialized validation services that verify the integrity of medical images before they reach diagnostic AI systems, checking for pixel-level anomalies that could indicate adversarial manipulation.</p>
+          </div>
+
+          <div class="card">
+            <strong>Secure Federated Learning</strong>
+            <p>Adopt secure aggregation protocols and robust filtering for federated learning systems to prevent model poisoning from compromised nodes, maintaining privacy while ensuring security.</p>
+          </div>
+        </div>
+
+        <div class="highlight">
+          <strong>Key Implementation Steps:</strong>
+          <ol>
+            <li>Conduct AI-specific risk assessments for all diagnostic systems in your organization</li>
+            <li>Implement data integrity verification for all medical images used in AI diagnostics</li>
+            <li>Perform adversarial testing on AI models before deployment in clinical settings</li>
+            <li>Deploy monitoring systems that can detect unusual inputs or outputs from AI diagnostic tools</li>
+            <li>Create incident response procedures specific to suspected adversarial manipulations</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Protect Your AI Diagnostic Systems</h2>
+      <p>Learn more about our comprehensive solutions to safeguard your healthcare organization's AI systems from adversarial attacks and data manipulation.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Request an AI Vulnerability Assessment</a>
+        <a href="deepfake-attacks.html" class="btn btn-secondary">Explore Deepfake Threats</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>HealthSecureAI</h3>
+          <p>Specialized cybersecurity solutions for healthcare organizations facing generative AI threats.</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Deepfake Detection Guide</a></li>
+            <li><a href="#">Healthcare AI Security Toolkit</a></li>
+            <li><a href="#">CISSP Framework for Healthcare</a></li>
+            <li><a href="#">AI Security Webinars</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#introduction">Introduction</a></li>
+            <li><a href="deepfake-attacks.html">Deepfake Attacks</a></li>
+            <li><a href="data-manipulation.html">Data Manipulation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <ul>
+            <li><a href="mailto:info@healthsecureai.uk">info@healthsecureai.uk</a></li>
+            <li><a href="tel:+442033456789">+44 (0)20 3345 6789</a></li>
+            <li>NHS Digital Innovation Centre, London EC1V 9FN</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 HealthSecureAI. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top">↑</a>
+
+  <!-- JavaScript for functionality -->
+  <script>
+    // When the user scrolls down, show the back to top button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+      var backToTopButton = document.querySelector('.back-to-top');
+      if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        backToTopButton.style.display = "flex";
+      } else {
+        backToTopButton.style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    document.querySelector('.back-to-top').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+
+    // Smooth scrolling for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Set the back to top button to be initially hidden
+    document.querySelector('.back-to-top').style.display = "none";
+  </script>
+</body>
+
+</html>

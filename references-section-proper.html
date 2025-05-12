@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>References - UK Healthcare Cybersecurity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #005BAC;
+      --dark: #002147;
+      --accent: #FF6F61;
+      --accent2: #4CAF50;
+      --bg: #F7F9FC;
+      --text: #333;
+      --heading-font: 'Inter', sans-serif;
+      --body-font: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--body-font);
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 1rem;
+    }
+
+    /* Site Header */
+    .site-header {
+      background: var(--dark);
+      color: #fff;
+      padding: 2rem 0;
+    }
+
+    .site-header h1 {
+      font-family: var(--heading-font);
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .site-header p {
+      font-size: 1.2rem;
+      opacity: 0.85;
+      max-width: 800px;
+    }
+
+    /* Navigation */
+    .site-nav {
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .site-nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+    }
+
+    .brand {
+      font-family: var(--heading-font);
+      font-size: 1.25rem;
+      color: var(--dark);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Back to Home button */
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--primary);
+      color: white;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-back:hover {
+      background: var(--dark);
+      transform: translateX(-3px);
+      color: white;
+    }
+
+    .nav-back::before {
+      content: '←';
+      font-size: 1.1rem;
+    }
+
+    /* Main section styles */
+    section {
+      padding: 3rem 0;
+    }
+
+    section .container {
+      max-width: 1000px;
+    }
+
+    section h2 {
+      font-family: var(--heading-font);
+      font-size: 2rem;
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    section h2:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: var(--accent);
+    }
+
+    section h3 {
+      font-family: var(--heading-font);
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin: 2rem 0 1rem;
+    }
+
+    /* Table of Contents */
+    .toc-card {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 2rem 0;
+    }
+
+    .toc-card h2 {
+      font-family: var(--heading-font);
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--dark);
+    }
+
+    .toc-card h2:after {
+      display: none;
+    }
+
+    .toc-card ul {
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 0.75rem;
+    }
+
+    .toc-card li {
+      display: flex;
+      align-items: center;
+    }
+
+    .toc-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: 0.9rem;
+      margin-right: 0.75rem;
+    }
+
+    /* References Section Styling */
+    .references-intro {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .references-intro p {
+      font-size: 1.1rem;
+      color: #666;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .reference-category {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 2rem 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .reference-category h3 {
+      color: var(--primary);
+      border-bottom: 2px solid rgba(0, 91, 172, 0.2);
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .reference-list {
+      counter-reset: ref-counter;
+    }
+
+    .reference-list li {
+      counter-increment: ref-counter;
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .reference-list li:hover {
+      border-left-color: var(--accent);
+      background: rgba(255, 111, 97, 0.02);
+      padding-left: 3.5rem;
+    }
+
+    .reference-list li::before {
+      content: counter(ref-counter) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    .reference-list em {
+      color: #666;
+      font-style: italic;
+    }
+
+    .reference-list a {
+      color: var(--primary);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .reference-list a:hover {
+      color: var(--accent);
+    }
+
+    /* Category Tags */
+    .category-tag {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      background: rgba(0, 91, 172, 0.1);
+      color: var(--primary);
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .category-tag.ai {
+      background: rgba(76, 175, 80, 0.1);
+      color: var(--accent2);
+    }
+
+    .category-tag.covid {
+      background: rgba(255, 111, 97, 0.1);
+      color: var(--accent);
+    }
+
+    /* Back to Top Button */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--primary);
+      color: #fff;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.25rem;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+      display: none;
+    }
+
+    .back-to-top:hover {
+      opacity: 1;
+      color: white;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 0 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-col h3 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-col a {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .footer-col a:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .nav-links:not(.nav-back) {
+        display: none;
+      }
+
+      .reference-list li {
+        padding-left: 2rem;
+      }
+
+      .reference-list li:hover {
+        padding-left: 2.5rem;
+      }
+
+      .site-header h1 {
+        font-size: 2rem;
+      }
+
+      .site-header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <h1>Comprehensive References</h1>
+      <p>Academic Sources and Research Supporting Our Cybersecurity Analysis</p>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="site-nav">
+    <div class="container">
+      <div class="brand">UK Healthcare Cybersecurity Hub</div>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-back">Back to Home</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- References Section -->
+  <section id="references">
+    <div class="container">
+      <h2>References</h2>
+
+      <div class="references-intro">
+        <p>All sources have been carefully selected and verified to ensure the highest quality of research and information for understanding cybersecurity threats in UK healthcare.</p>
+      </div>
+
+      <div class="toc-card">
+        <h2>Reference Categories</h2>
+        <ul>
+          <li><span class="toc-number">1</span> <a href="#ref-nis2">NIS2 References</a></li>
+          <li><span class="toc-number">2</span> <a href="#ref-covid">COVID-19 References</a></li>
+          <li><span class="toc-number">3</span> <a href="#ref-ai">AI References</a></li>
+        </ul>
+      </div>
+
+      <div id="ref-nis2" class="reference-category">
+        <span class="category-tag">NIS2 Directive</span>
+        <h3>NIS2 References</h3>
+        
+        <ul class="reference-list">
+          <li>Alzahrani, N., Bulusu, N. and De Freitas, F., 2022. Healthcare cybersecurity: understanding supply chain vulnerabilities and mitigation strategies. <em>Journal of Network and Computer Applications</em>, 202, 103370.</li>
+          
+          <li>Department of Health and Social Care, 2023. <em>Cyber security strategy for health and social care: 2023 to 2030</em>. London: Department of Health and Social Care. Available from: <a href="https://www.gov.uk/government/publications/cyber-security-strategy-for-health-and-social-care-2023-to-2030">https://www.gov.uk/government/publications/cyber-security-strategy-for-health-and-social-care-2023-to-2030</a> [Accessed 11 May 2025].</li>
+          
+          <li>Dixon, C., 2025. FDA issues alerts about cybersecurity flaws in patient monitors. <em>Health IT Security</em>, 2 March. Available from: <a href="https://www.healthitsecurity.com/news/fda-issues-alerts-about-cybersecurity-flaws-in-patient-monitors">https://www.healthitsecurity.com/news/fda-issues-alerts-about-cybersecurity-flaws-in-patient-monitors</a> [Accessed 9 May 2025].</li>
+          
+          <li>Ghafur, S., Kristensen, S., Honeyford, K., Martin, G., Darzi, A. and Aylin, P., 2019. A retrospective impact analysis of the WannaCry cyberattack on the NHS. <em>NPJ Digital Medicine</em>, 2(1), 98.</li>
+          
+          <li>He, Y., Chen, C., Li, T. and Wang, Y., 2021. Cybersecurity challenges and social engineering attacks in healthcare under COVID-19. <em>International Journal of Medical Informatics</em>, 153, 104542.</li>
+          
+          <li>High, J., 2025. Inadequate security assessments in healthcare organizations: a comprehensive analysis. <em>Cybersecurity Today</em>, 14 February. Available from: <a href="https://www.cybersecuritytoday.com/healthcare-vulnerabilities-2025">https://www.cybersecuritytoday.com/healthcare-vulnerabilities-2025</a> [Accessed 10 May 2025].</li>
+          
+          <li>Information Commissioner's Office (2023) <em>Former NHS secretary found guilty of illegally accessing medical records</em>. [online] Available at: <a href="https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/11/former-nhs-secretary-found-guilty-of-illegally-accessing-medical-records/">https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2023/11/former-nhs-secretary-found-guilty-of-illegally-accessing-medical-records/</a> [Accessed 10 May 2025].</li>
+          
+          <li>Johnson, T., Williams, S. and Brown, A., 2023. Collaborative approaches to healthcare cybersecurity. <em>Journal of Healthcare Information Management</em>, 37(2), 45-58.</li>
+          
+          <li>Martin, G., Ghafur, S., Cingolani, I., Symons, J., King, D. and Arora, S., 2022. The effects of malware on hospital medical devices: a systematic review. <em>BMJ Health & Care Informatics</em>, 29(1), e100552.</li>
+          
+          <li>McBride, L., 2024. Third-party vendor security risks in healthcare: a critical assessment. <em>Healthcare Information and Management Systems Society Journal</em>, 43(1), 78-92.</li>
+          
+          <li>Michael, K., 2023. SolarWinds Orion supply chain attack: anatomy of a breach. <em>Journal of Cybersecurity Research</em>, 5(2), 134-149.</li>
+          
+          <li>National Cyber Security Centre, 2023. <em>Supply chain security for healthcare organizations</em>. London: NCSC. Available from: <a href="https://www.ncsc.gov.uk/guidance/healthcare-supply-chain-security">https://www.ncsc.gov.uk/guidance/healthcare-supply-chain-security</a> [Accessed 11 May 2025].</li>
+          
+          <li>NHS Digital, 2023. <em>Data security and protection toolkit: guidance for healthcare vendors</em>. Leeds: NHS Digital. Available from: <a href="https://digital.nhs.uk/data-and-information/looking-after-information/data-security-and-information-governance/data-security-and-protection-toolkit">https://digital.nhs.uk/data-and-information/looking-after-information/data-security-and-information-governance/data-security-and-protection-toolkit</a> [Accessed 10 May 2025].</li>
+          
+          <li>Papaphilippou, P., Fradley, M., Arora, S. and Ghafur, S., 2023. Cyber defense strategies for healthcare: prioritizing patient safety and clinical operations. <em>BMJ Health & Care Informatics</em>, at press.</li>
+          
+          <li>Rice, D., 2025. The expanding digital threat landscape in healthcare. <em>HealthTech Magazine</em>, 24 January. Available from: <a href="https://healthtechmagazine.net/article/2025/01/healthcare-cybersecurity-threats-2025-perfcon">https://healthtechmagazine.net/article/2025/01/healthcare-cybersecurity-threats-2025-perfcon</a> [Accessed 11 May 2025].</li>
+          
+          <li>Schnackenburg, R., 2025. Hardware security in healthcare: understanding attack vectors and prevention strategies. <em>Journal of Healthcare IT Management</em>, 12(1), 34-47.</li>
+          
+          <li>Traynor, M., 2025. Cybercriminal tactics targeting healthcare supply chains. <em>Health Information Security</em>, 17 March. Available from: <a href="https://www.healthinfosecurity.com/cybercriminal-tactics-targeting-healthcare-supply-chains-a-22567">https://www.healthinfosecurity.com/cybercriminal-tactics-targeting-healthcare-supply-chains-a-22567</a> [Accessed 10 May 2025].</li>
+          
+          <li>UpGuard Team (2019) <em>Medical Procedure: How a Misconfigured Storage Bucket Exposed Medical Data</em>. [online] Available at: <a href="https://www.upguard.com/breaches/data-leak-hipaa-medico-s3">https://www.upguard.com/breaches/data-leak-hipaa-medico-s3</a> [Accessed 10 May 2025].</li>
+          
+          <li>Zhang, L. and Thompson, P., 2023. Continuous monitoring: the future of healthcare supply chain security. <em>Journal of Health Information Management</em>, 37(4), 215-229.</li>
+        </ul>
+      </div>
+
+      <div id="ref-covid" class="reference-category">
+        <span class="category-tag covid">COVID-19 Pandemic</span>
+        <h3>COVID-19 References</h3>
+        
+        <ul class="reference-list">
+          <li>Abnormal AI. (2022). <em>What is email spoofing? How to prevent it</em>. [online] Available at: <a href="https://abnormal.ai/glossary/email-spoofing">https://abnormal.ai/glossary/email-spoofing</a> [Accessed 8 May 2025].</li>
+          
+          <li>Alzahrani, N.A., et al. (2022). Cybersecurity challenges in healthcare supply chains: A review. <em>International Journal of Environmental Research and Public Health</em>, 19(12), p.7475. <a href="https://doi.org/10.3390/ijerph19127475">https://doi.org/10.3390/ijerph19127475</a>.</li>
+          
+          <li>Arabo, A. and Pranggono, B. (2013). Mobile malware and smart device security: trends, challenges and solutions. <em>Proceeding of the 19th International Conference on Control Systems and Computer Science</em>, pp.526-531.</li>
+          
+          <li>Asri, S. and Pranggono, B. (2015). Impact of distributed denial-of-service attack on advanced metering infrastructure. <em>Wireless Personal Communications</em>, 83, pp.2211-2223.</li>
+          
+          <li>BMJ. (2021). <em>Remote consulting in UK primary care during the COVID-19 pandemic: a national survey</em>. [online] Available at: <a href="https://bjgp.org/content/71/704/e166">https://bjgp.org/content/71/704/e166</a> [Accessed 10 May 2025].</li>
+          
+          <li>Cimpanu, C. (2017). <em>87% of Millennials engage in password reuse</em>. [online] BleepingComputer. Available at: <a href="https://www.bleepingcomputer.com/news/security/87-percent-of-millennials-engage-in-password-reuse/">https://www.bleepingcomputer.com/news/security/87-percent-of-millennials-engage-in-password-reuse/</a> [Accessed 9 May 2025].</li>
+          
+          <li>Coccolini, F., Perrone, G., Chiarugi, M., et al. (2020). Surgery in COVID-19 patients: operational directives. <em>World Journal of Emergency Surgery</em>, 15(1). <a href="https://doi.org/10.1186/s13017-020-00307-2">https://doi.org/10.1186/s13017-020-00307-2</a>.</li>
+          
+          <li>CPS. (2020). <em>Cybercrime - prosecution guidance</em>. [online] Crown Prosecution Service. Available at: <a href="https://www.cps.gov.uk/legal-guidance/cybercrime-prosecutionguidance">https://www.cps.gov.uk/legal-guidance/cybercrime-prosecutionguidance</a> [Accessed 11 July 2020].</li>
+          
+          <li>DAC Beachcroft (2022) <em>Former NHS employee prosecuted and fined after illegally accessing patient records without a valid legal reason</em>. [online] Available at: <a href="https://www.dacbeachcroft.com/en/What-we-think/Former-NHS-employee-prosecuted-and-fined-after-illegally-accessing-patient-records-without-a-valid-l">https://www.dacbeachcroft.com/en/What-we-think/Former-NHS-employee-prosecuted-and-fined-after-illegally-accessing-patient-records-without-a-valid-l</a> [Accessed 10 May 2025].</li>
+          
+          <li>Deloitte. (n.d.). <em>COVID-19: Cyber and the remote workforce -- How cyber vulnerabilities and operational efficiencies are reshaping the "next normal"</em>. [online] Available at: <a href="https://www2.deloitte.com/content/dam/Deloitte/global/Documents/Risk/gx-covid-19-cyber-and-the-remote-workforce.pdf">https://www2.deloitte.com/content/dam/Deloitte/global/Documents/Risk/gx-covid-19-cyber-and-the-remote-workforce.pdf</a> [Accessed 10 May 2025].</li>
+          
+          <li>Gao, G.F. (2018). From "A" IV to "Z" IKV: attacks from emerging and re-emerging pathogens. <em>Cell</em>, 172(6), pp.1157-1159.</li>
+          
+          <li>GOV.UK. (2023). <em>Cyber security strategy for health and social care 2023 to 2030</em>. [online] Available at: <a href="https://www.gov.uk/government/publications/cyber-security-strategy-for-health-and-social-care-2023-to-2030/a-cyber-resilient-health-and-adult-social-care-system-in-england-cyber-security-strategy-to-2030">https://www.gov.uk/government/publications/cyber-security-strategy-for-health-and-social-care-2023-to-2030/a-cyber-resilient-health-and-adult-social-care-system-in-england-cyber-security-strategy-to-2030</a> [Accessed 10 May 2025].</li>
+          
+          <li>Goodwin, B. (2020). Cyber gangsters hit UK medical firm poised for work on coronavirus with Maze ransomware attack. <em>Computer Weekly</em>, 22.</li>
+          
+          <li>Hackersimulations.com. (2024). <em>Lack of Multi-Factor Authentication (MFA)/2FA is a security vulnerability -- NYC Pentesting Services</em>. [online] Available at: <a href="https://hackersimulations.com/lack-of-mfa-is-a-security-vulnerability/">https://hackersimulations.com/lack-of-mfa-is-a-security-vulnerability/</a> [Accessed 10 May 2025].</li>
+          
+          <li>He, D., et al. (2021). Health care cybersecurity during COVID-19: A scoping review. <em>JMIR Preprints</em>, 21747. <a href="https://doi.org/10.2196/preprints.21747">https://doi.org/10.2196/preprints.21747</a>.</li>
+          
+          <li>He, W., et al. (2020). Digital health technologies for COVID-19 pandemic management and control: a systematic review. <em>JMIR Public Health and Surveillance</em>, 6(3), p.e22280. <a href="https://doi.org/10.2196/22280">https://doi.org/10.2196/22280</a>.</li>
+          
+          <li>Humayun, M., Niazi, M., Jhanjhi, N.Z., Alshayeb, M. and Mahmood, S. (2020). Cyber security threats and vulnerabilities: a systematic mapping study. <em>Arabian Journal for Science and Engineering</em>, 45, pp.3171-3189.</li>
+          
+          <li>ICO. (2023). <em>Data security in health and social care</em>. [online] Available at: <a href="https://ico.org.uk/for-organisations/health/data-security-in-health-and-social-care/">https://ico.org.uk/for-organisations/health/data-security-in-health-and-social-care/</a> [Accessed 10 May 2025].</li>
+          
+          <li>Ives, B., Walsh, K.R. and Schneider, H. (2004). The domino effect of password reuse. <em>Communications of the ACM</em>, 47(4), pp.75-78. <a href="https://doi.org/10.1145/975817.975820">https://doi.org/10.1145/975817.975820</a>.</li>
+          
+          <li>Kalamkar, M.D. and Prasad, R. (2022). Impact of the COVID-19 pandemic on cyber security issues in the healthcare domain. In: <em>Healthcare Informatics</em>, pp.49-66. CRC Press.</li>
+          
+          <li>King's Fund. (2022). <em>The impact of Covid-19 on the use of digital technology in the NHS</em>. [online] Available at: <a href="https://www.nuffieldtrust.org.uk/research/the-impact-of-covid-19-on-the-use-of-digital-technology-in-the-nhs">https://www.nuffieldtrust.org.uk/research/the-impact-of-covid-19-on-the-use-of-digital-technology-in-the-nhs</a> [Accessed 10 May 2025].</li>
+          
+          <li>Mangoyan, V. and Μαγκογιάν, Β. (2024). Phishing framework with MFA bypassing. [online] <em>Unipi.gr</em>. Available at: <a href="https://dione.lib.unipi.gr/xmlui/handle/unipi/17231">https://dione.lib.unipi.gr/xmlui/handle/unipi/17231</a> [Accessed 8 May 2025].</li>
+          
+          <li>National Cyber Security Centre (NCSC) and Cybersecurity and Infrastructure Security Agency (CISA). (2020). <em>COVID-19 exploited by malicious cyber actors</em>. [online] Available at: <a href="https://www.ncsc.gov.uk/news/covid-19-exploited-by-cyber-actors-advisory">https://www.ncsc.gov.uk/news/covid-19-exploited-by-cyber-actors-advisory</a> [Accessed 4 June 2020].</li>
+          
+          <li>newsroom.accenture.com. (n.d.). <em>Lack of awareness limiting use of patient services, Accenture research finds</em>. [online] Available at: <a href="https://newsroom.accenture.com/news/2017/lack-of-awareness-limiting-use-of-patient-services-accenture-research-finds">https://newsroom.accenture.com/news/2017/lack-of-awareness-limiting-use-of-patient-services-accenture-research-finds</a> [Accessed 10 May 2025].</li>
+          
+          <li>NHS Digital's Data Security Centre. (2021). <em>The importance of good cyber security during a pandemic</em>. [online] Available at: <a href="https://digital.nhs.uk/blog/transformation-blog/2021/the-importance-of-good-cyber-security-during-a-pandemic">https://digital.nhs.uk/blog/transformation-blog/2021/the-importance-of-good-cyber-security-during-a-pandemic</a> [Accessed 10 May 2025].</li>
+          
+          <li>NHS England London Region. (2024). <em>Cyber attack on Synnovis -- update</em>. [online] Available at: <a href="https://www.england.nhs.uk/london/2024/06/cyber-attack-on-synnovis-update/">https://www.england.nhs.uk/london/2024/06/cyber-attack-on-synnovis-update/</a> [Accessed 10 May 2025].</li>
+          
+          <li>Outpost24. (2022). <em>Evilginx & Gophish: How hackers launch phishing campaigns</em>. [online] Available at: <a href="https://outpost24.com/blog/phishing-better-proxy-than-story/">https://outpost24.com/blog/phishing-better-proxy-than-story/</a> [Accessed 8 May 2025].</li>
+          
+          <li>PMC. (n.d.). <em>A deeper look into cybersecurity issues in the wake of Covid-19: A survey</em>. [online] Available at: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9367180/">https://pmc.ncbi.nlm.nih.gov/articles/PMC9367180/</a> [Accessed 10 May 2025].</li>
+          
+          <li>ResearchGate. (n.d.). <em>Cyber security risks and challenges in remote work under the COVID-19 pandemic</em>. [online] Available at: <a href="https://www.researchgate.net/publication/357468031_Cyber_Security_Risks_And_Challenges_In_Remote_Work_Under_The_Covid-19_Pandemic">https://www.researchgate.net/publication/357468031_Cyber_Security_Risks_And_Challenges_In_Remote_Work_Under_The_Covid-19_Pandemic</a> [Accessed 10 May 2025].</li>
+          
+          <li>ResearchGate. (n.d.). <em>The growing number of cybersecurity vulnerabilities inside healthcare supply chain</em>. [online] Available at: <a href="https://www.researchgate.net/publication/378647941_The_Growing_Number_of_Cybersecurity_Vulnerabilities_Inside_Healthcare_Supply_Chain">https://www.researchgate.net/publication/378647941_The_Growing_Number_of_Cybersecurity_Vulnerabilities_Inside_Healthcare_Supply_Chain</a> [Accessed 10 May 2025].</li>
+          
+          <li>Specops Software. (2021). <em>Understanding NHS cyber risks of remote working during Covid-19</em>. [online] Available at: <a href="https://www.nationalhealthexecutive.com/articles/specops-nhs-cyber-risk-remote-working">https://www.nationalhealthexecutive.com/articles/specops-nhs-cyber-risk-remote-working</a> [Accessed 10 May 2025].</li>
+          
+          <li>The Alan Turing Institute. (2021). <em>Concern over reliance on digital technologies for student mental health care</em>. [online] Available at: <a href="https://www.turing.ac.uk/news/concern-over-reliance-digital-technologies-student-mental-health-care">https://www.turing.ac.uk/news/concern-over-reliance-digital-technologies-student-mental-health-care</a> [Accessed 10 May 2025].</li>
+          
+          <li>UK Parliament. (2022). <em>Working from home: UK Parliament</em>. [online] Available at: <a href="https://post.parliament.uk/research-briefings/post-pb-0049/">https://post.parliament.uk/research-briefings/post-pb-0049/</a> [Accessed 10 May 2025].</li>
+          
+          <li>University of Oxford. (2020). <em>Cyber security: guidance for staff and students working remotely</em>. [online] Available at: <a href="https://www.it.ox.ac.uk/news/cyber-security-guidance-staff-and-students-working-remotely">https://www.it.ox.ac.uk/news/cyber-security-guidance-staff-and-students-working-remotely</a> [Accessed 10 May 2025].</li>
+          
+          <li>WHO. (2020). <em>Cyber attacks on hospitals are a threat to global health</em>. [online] Available at: <a href="https://www.who.int/news-room/commentaries/detail/cyber-attacks-on-hospitals-are-a-threat-to-global-health">https://www.who.int/news-room/commentaries/detail/cyber-attacks-on-hospitals-are-a-threat-to-global-health</a> [Accessed 10 May 2025].</li>
+          
+          <li>World Economic Forum. (2020). <em>COVID-19 risks outlook -- A preliminary mapping and its implications</em>. [online] Available at: <a href="http://www3.weforum.org/docs/WEF_COVID_19_Risks_Outlook_Special_Edition_Pages.pdf">http://www3.weforum.org/docs/WEF_COVID_19_Risks_Outlook_Special_Edition_Pages.pdf</a> [Accessed 9 June 2020].</li>
+          
+          <li>Zhu, N., Zhang, D., Wang, W., et al. (2020). A novel coronavirus from patients with pneumonia in China, 2019. <em>New England Journal of Medicine</em>, 382(8), pp.727-733.</li>
+        </ul>
+      </div>
+
+      <div id="ref-ai" class="reference-category">
+        <span class="category-tag ai">Artificial Intelligence</span>
+        <h3>AI References</h3>
+        
+        <ul class="reference-list">
+          <li>CleverHans, 2025. <em>Adversarial example library for machine learning</em>. Available at: <a href="https://cleverhans.io/">https://cleverhans.io/</a> [Accessed 9 May 2025].</li>
+          
+          <li>Behold.ai, 2025. <em>Homepage</em>. Available at: <a href="https://www.behold.ai/">https://www.behold.ai/</a>.</li>
+          
+          <li>Brisimi, T.S., Chen, R., Mela, T., Olshevsky, A., Paschalidis, I.C. and Shi, W., 2018. Federated learning of predictive models from federated electronic health records. <em>International Journal of Medical Informatics</em>. Available at: <a href="https://pubmed.ncbi.nlm.nih.gov/29500022/">https://pubmed.ncbi.nlm.nih.gov/29500022/</a>.</li>
+          
+          <li>Brohi, S. and Mastoi, Q., 2024. <em>AI Under Attack: Metric-Driven Analysis of Cybersecurity Threats in Deep Learning Models for Healthcare Applications</em>. ResearchGate. Available at: <a href="https://www.researchgate.net/publication/389709749">https://www.researchgate.net/publication/389709749</a>.</li>
+          
+          <li>Carlini, N. and Wagner, D., 2017. <em>BadNets: Identifying vulnerabilities in the machine learning model supply chain</em>. Available at: <a href="https://arxiv.org/abs/1708.06733">https://arxiv.org/abs/1708.06733</a> [Accessed 9 May 2025].</li>
+          
+          <li>Cobalt Strike, n.d. <em>Adversary simulations and red team operations</em>. Available at: <a href="https://www.cobaltstrike.com/adversary-simulations-red-team-operations">https://www.cobaltstrike.com/adversary-simulations-red-team-operations</a> [Accessed 9 May 2025].</li>
+          
+          <li>CVE, 2023. <em>CVE-2023-34296</em>. Available at: <a href="https://www.cve.org/CVERecord?id=CVE-2023-34296">https://www.cve.org/CVERecord?id=CVE-2023-34296</a>.</li>
+          
+          <li>Finlayson, S., Chung, H.W., Kohane, S.I. and Beam, L.A., 2018. Adversarial attacks against medical deep learning systems. Available at: <a href="https://arxiv.org/abs/1804.05296">https://arxiv.org/abs/1804.05296</a>.</li>
+          
+          <li>Finlayson, S.G., Bowers, J.D., Ito, J., Zittrain, J.L., Beam, A.L. and Kohane, I.S., 2019. Adversarial attacks on medical machine learning. <em>Science</em>, 363(6433), pp.1287-1289.</li>
+          
+          <li>Ford, N., 2025. <em>The 8 CISSP domains explained</em>. IT Governance. Available at: <a href="https://www.itgovernance.co.uk/blog/the-8-cissp-domains-explained">https://www.itgovernance.co.uk/blog/the-8-cissp-domains-explained</a>.</li>
+          
+          <li>Gu, T., Dolan-Gavitt, B. and Garg, S., 2017. <em>BadNets: Identifying vulnerabilities in the machine learning model supply chain</em>. arXiv preprint. Available at: <a href="https://arxiv.org/abs/1708.06733">https://arxiv.org/abs/1708.06733</a>.</li>
+          
+          <li>Gupta, M., 2024. <em>Gradient descent and variants</em>. Medium. Available at: <a href="https://medium.com/@manoj-gupta/machine-learning-part-2-gradient-descent-and-variants-293f790850a6">https://medium.com/@manoj-gupta/machine-learning-part-2-gradient-descent-and-variants-293f790850a6</a>.</li>
+          
+          <li>Hickok, M., 2024. Public procurement of artificial intelligence systems: new risks and future proofing. <em>AI & Society</em>, 39, pp.1213-1227. Available at: <a href="https://doi.org/10.1007/s00146-022-01572-2">https://doi.org/10.1007/s00146-022-01572-2</a>.</li>
+          
+          <li>Huang, J., Li, H. and Zhang, J., 2018. Blockchain-based log system. Available at: <a href="https://ieeexplore.ieee.org/document/8622204">https://ieeexplore.ieee.org/document/8622204</a>.</li>
+          
+          <li>ICO, 2025. <em>Enforcement notice: Advanced Computer Software Group Ltd</em>. Available at: <a href="https://ico.org.uk/action-weve-taken/enforcement/2025/03/advanced-computer-software-group-limited/">https://ico.org.uk/action-weve-taken/enforcement/2025/03/advanced-computer-software-group-limited/</a>.</li>
+          
+          <li>ICO, 2025. <em>Software provider fined £3m following ransomware attack</em>. Available at: <a href="https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2025/03/software-provider-fined-3m-following-2022-ransomware-attack/">https://ico.org.uk/about-the-ico/media-centre/news-and-blogs/2025/03/software-provider-fined-3m-following-2022-ransomware-attack/</a>.</li>
+          
+          <li>ICO, n.d. <em>How can we comply with the data protection principles when using surveillance systems?</em> Available at: <a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/cctv-and-video-surveillance/guidance-on-video-surveillance-including-cctv/how-can-we-comply-with-the-data-protection-principles-when-using-surveillance-systems/">https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/cctv-and-video-surveillance/guidance-on-video-surveillance-including-cctv/how-can-we-comply-with-the-data-protection-principles-when-using-surveillance-systems/</a>.</li>
+          
+          <li>Joshi, I. and Cushnan, D., 2020. <em>A buyer's guide to AI in health and care</em>. NHSX. Available at: <a href="https://transform.england.nhs.uk/media/documents/NHSX_A_Buyers_Guide_to_AI_in_Health_and_Care.pdf">https://transform.england.nhs.uk/media/documents/NHSX_A_Buyers_Guide_to_AI_in_Health_and_Care.pdf</a>.</li>
+          
+          <li>Karras, T., Laine, S. and Aila, T., 2018. <em>A style-based generator architecture for generative adversarial networks</em>. Available at: <a href="https://arxiv.org/abs/1812.04948">https://arxiv.org/abs/1812.04948</a> [Accessed 9 May 2025].</li>
+          
+          <li>Kheiron Medical, 2021. <em>Mammography</em>. Available at: <a href="https://www.kheironmed.com/mammography/">https://www.kheironmed.com/mammography/</a>.</li>
+          
+          <li>Kheiron Medical, 2025. <em>Homepage</em>. Available at: <a href="https://www.kheironmed.com/">https://www.kheironmed.com/</a>.</li>
+          
+          <li>Khezr, S., Moniruzzaman, M., Yassine, A. and Benlamri, R., 2019. Blockchain technology in healthcare: A comprehensive review and directions for future research. <em>Applied Sciences</em>, 9(9), p.1736.</li>
+          
+          <li>Khraisat, A., Alazab, A., Alazab, M. et al., 2025. Securing federated learning: a defense strategy against targeted data poisoning attack. <em>Discover Internet of Things</em>, 5, p.16. Available at: <a href="https://doi.org/10.1007/s43926-025-00108-6">https://doi.org/10.1007/s43926-025-00108-6</a>.</li>
+          
+          <li>Lamche, A., 2025. <em>London NHS ransomware impact</em>. BBC. Available at: <a href="https://www.bbc.co.uk/news/articles/cp3yv1zxn94o">https://www.bbc.co.uk/news/articles/cp3yv1zxn94o</a>.</li>
+          
+          <li>Li, S., Edith, Ngai and Voigt, T., 2015. An experimental study of Byzantine-robust aggregation schemes in federated learning. Available at: <a href="https://arxiv.org/pdf/2302.07173">https://arxiv.org/pdf/2302.07173</a>.</li>
+          
+          <li>Lindemulder, G. and Kosinski, M., 2024. <em>Role-Based Access Control (RBAC)</em>. IBM. Available at: <a href="https://www.ibm.com/think/topics/rbac">https://www.ibm.com/think/topics/rbac</a>.</li>
+          
+          <li>Martin, A., 2024. <em>London hospitals surgeries postponed ransomware attack</em>. The Record. Available at: <a href="https://therecord.media/london-hospitals-surgeries-postponed-ransomware-attack">https://therecord.media/london-hospitals-surgeries-postponed-ransomware-attack</a>.</li>
+          
+          <li>Metasploit, n.d. <em>Penetration testing software, exploit development, and vulnerability research</em>. Available at: <a href="https://www.metasploit.com/">https://www.metasploit.com/</a> [Accessed 9 May 2025].</li>
+          
+          <li>Mindgard, 2025. <em>What is AI red teaming?</em> Available at: <a href="https://mindgard.ai/blog/what-is-ai-red-teaming">https://mindgard.ai/blog/what-is-ai-red-teaming</a>.</li>
+          
+          <li>NCSC, 2024. <em>Statement following reports of a Synnovis data breach</em>. Available at: <a href="https://www.ncsc.gov.uk/news/ncsc-statement-following-reports-of-a-synnovis-data-breach">https://www.ncsc.gov.uk/news/ncsc-statement-following-reports-of-a-synnovis-data-breach</a>.</li>
+          
+          <li>NHS Digital, 2025. <em>Cyber alert CC-4650</em>. Available at: <a href="https://digital.nhs.uk/cyber-alerts/2025/cc-4650">https://digital.nhs.uk/cyber-alerts/2025/cc-4650</a>.</li>
+          
+          <li>NVD, 2024. <em>CVE-2023-51637</em>. Available at: <a href="https://nvd.nist.gov/vuln/detail/CVE-2023-51637">https://nvd.nist.gov/vuln/detail/CVE-2023-51637</a>.</li>
+          
+          <li>NVD, 2024. <em>CVE-2024-33606</em>. Available at: <a href="https://nvd.nist.gov/vuln/detail/cve-2024-33606">https://nvd.nist.gov/vuln/detail/cve-2024-33606</a>.</li>
+          
+          <li>Ooi, K.-B. et al., 2023. The potential of generative artificial intelligence across disciplines: Perspectives and future directions. <em>Journal of Computer Information Systems</em>, 65(1), pp.76-107. doi: 10.1080/08874417.2023.2261010.</li>
+          
+          <li>Papernot, N., McDaniel, P., Goodfellow, I., Jha, S., Celik, Z.B. and Swami, A., 2017. Practical black-box attacks against machine learning. Available at: <a href="https://www.mdpi.com/1999-4893/18/3/157">https://www.mdpi.com/1999-4893/18/3/157</a>.</li>
+          
+          <li>PharmaPhorum, 2025. <em>Google's DeepMind creating blockchain tech for NHS health data tracking</em>. Available at: <a href="https://pharmaphorum.com/news/googles-deepmind-creating-blockchain-tech-nhs-health-data-tracking">https://pharmaphorum.com/news/googles-deepmind-creating-blockchain-tech-nhs-health-data-tracking</a>.</li>
+          
+          <li>Rauber, J. and Zimmermann, S.R., 2021. <em>Foolbox: A Python toolbox to benchmark the robustness of machine learning models</em>. Available at: <a href="https://foolbox.readthedocs.io/en/stable/">https://foolbox.readthedocs.io/en/stable/</a> [Accessed 9 May 2025].</li>
+          
+          <li>Saetra, H.S., 2023. Generative AI: Here to stay, but for good? <em>Technology in Society</em> [Preprint]. doi: 10.2139/ssrn.4330244.</li>
+          
+          <li>Singh, S., 2024. <em>Adversarial AI training: Understanding and prevention strategies</em>. Labellerr. Available at: <a href="https://www.labellerr.com/blog/what-are-adversarial-attacks-in-machine-learning-and-how-can-you-prevent-them/">https://www.labellerr.com/blog/what-are-adversarial-attacks-in-machine-learning-and-how-can-you-prevent-them/</a> [Accessed 9 May 2025].</li>
+          
+          <li>StyleGAN, n.d. <em>A style-based generator architecture for generative adversarial networks</em>. GitHub. Available at: <a href="https://github.com/NVlabs/stylegan">https://github.com/NVlabs/stylegan</a> [Accessed 9 May 2025].</li>
+          
+          <li>Taiello, R., Cansiz, S., Vesin, M., Cremonesi, F., Innocenti, L., Onen, M. and Lorenzi, M., 2024. Enhancing privacy in federated learning: Secure aggregation for real-world healthcare applications. Available at: <a href="https://arxiv.org/abs/2409.00974">https://arxiv.org/abs/2409.00974</a>.</li>
+          
+          <li>Thoemmes, S., 2025. <em>What is a data poisoning attack?</em> Snyk. Available at: <a href="https://snyk.io/articles/what-is-a-data-poisoning-attack/">https://snyk.io/articles/what-is-a-data-poisoning-attack/</a>.</li>
+          
+          <li>Tolpegin, V., Truex, S., Gursoy, E.M. and Liu, L., 2020. Data poisoning attacks against federated learning systems. Available at: <a href="https://arxiv.org/pdf/2007.08432">https://arxiv.org/pdf/2007.08432</a>.</li>
+          
+          <li>Topol, E., 2019. <em>Deep Medicine: How Artificial Intelligence Can Make Healthcare Human Again</em>.</li>
+          
+          <li>Tramer, F., Zhang, F., Juels, A., Reiter, K.M. and Ristenpart, T., 2016. Stealing machine learning models via prediction APIs. Available at: <a href="https://arxiv.org/abs/1609.02943">https://arxiv.org/abs/1609.02943</a>.</li>
+          
+          <li>Truex, S., Baracaldo, N., Anwar, A., Steinke, T., Ludwig, H., Zhang, R. and Zhoui, Y., 2019. A hybrid approach to privacy-preserving federated learning. Available at: <a href="https://arxiv.org/abs/1812.03224">https://arxiv.org/abs/1812.03224</a>.</li>
+          
+          <li>Wang, Y., Rajat, R., Lee, J., Tang, T. and Annavaram, M., 2024. Fastrack: Fast IO for secure ML using GPU TEEs. Available at: <a href="https://arxiv.org/abs/2410.15240">https://arxiv.org/abs/2410.15240</a>.</li>
+          
+          <li>Fieldfisher, 2023. <em>The NIS 2 Directive: Implications for the Healthcare Sector and Manufacturers of Medical Devices</em>. Available at: <a href="https://www.fieldfisher.com/en/insights/the-nis-2-directive-implications-for-the-healthcare-sector-and-manufacturers-of-medical-devices">https://www.fieldfisher.com/en/insights/the-nis-2-directive-implications-for-the-healthcare-sector-and-manufacturers-of-medical-devices</a>.</li>
+          
+          <li>HIMSS, 2023. <em>Cybersecurity Survey: Healthcare Security Leader Insights</em>.</li>
+          
+          <li>Proofpoint, 2023. <em>Healthcare Cybersecurity Report</em>. Available at: <a href="https://www.proofpoint.com/uk/resources/threat-reports/ponemon-healthcare-cybersecurity-report">https://www.proofpoint.com/uk/resources/threat-reports/ponemon-healthcare-cybersecurity-report</a>.</li>
+          
+          <li>UK Government, 2023. <em>Network and Information Systems Regulations 2018: Guide for the Health Sector in England</em>. Available at: <a href="https://www.gov.uk/government/publications/network-and-information-systems-regulations-2018-health-sector-guide">https://www.gov.uk/government/publications/network-and-information-systems-regulations-2018-health-sector-guide</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Back to Top Button -->
+  <a href="#" class="back-to-top">↑</a>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>UK Healthcare Cybersecurity Hub</h3>
+          <p>Comprehensive research on cybersecurity threats in UK healthcare.</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="covid-healthcare-website (1).html">COVID-19 Risks</a></li>
+            <li><a href="final-updated-nis2-website.html">NIS2 Compliance</a></li>
+            <li><a href="combined-healthcare-ai-security.html">AI Threats</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Reference Categories</h3>
+          <ul>
+            <li><a href="#ref-nis2">NIS2 References</a></li>
+            <li><a href="#ref-covid">COVID-19 References</a></li>
+            <li><a href="#ref-ai">AI References</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>Contact</h3>
+          <ul>
+            <li>Research by BU Cybersecurity Team</li>
+            <li>2025</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 UK Healthcare Cybersecurity Hub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for functionality -->
+  <script>
+    // When the user scrolls down 20px from the top of the document, show the back to top button
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+      var backToTopButton = document.querySelector('.back-to-top');
+      if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        backToTopButton.style.display = "flex";
+      } else {
+        backToTopButton.style.display = "none";
+      }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    document.querySelector('.back-to-top').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    });
+
+    // Smooth scrolling for all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+
+    // Set the back to top button to be initially hidden
+    document.querySelector('.back-to-top').style.display = "none";
+  </script>
+</body>
+
+</html>
